@@ -1,4 +1,6 @@
 import Facturapi from 'facturapi';
+import { Invoice } from '../../../models';
+
 
 const facturapi = new Facturapi(process.env.FACTURAPI_KEY)
 

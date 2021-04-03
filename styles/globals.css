@@ -1,16 +1,104 @@
-html,
+@import "https://fonts.googleapis.com/css?family=Montserrat:wght@500";
+
+:root {
+  --font-site: 'Montserrat', sans-serif;
+  --sidebar-bg: #2d8feb;
+  --sidebar-item-active: #fff;
+  --sidebar-item: #2d8feb;
+  --sidebar-item-hover: #59aaf5;
+}
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: var(--font-site);
+  background: #fafafa;
 }
 
-a {
+p {
+  font-family: var(--font-site);
+  font-size: 1.1em;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
+}
+
+a, a:hover, a:focus {
   color: inherit;
-  text-decoration: none;
+  text-decoration: none !important;
+  transition: all 0.3s;
 }
 
-* {
-  box-sizing: border-box;
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+#sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 100vh;
+  background: var(--sidebar-bg);
+  color: #fff;
+  transition: all 0.3s;
+}
+
+#sidebar.active {
+  margin-left: -250px;
+}
+a[data-toggle="collapse"] {
+  position: relative;
+}
+
+.dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #2d8feb;
+}
+
+#sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--sidebar-bg);
+}
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  color: #fff;
+
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+}
+#sidebar ul li a:hover {
+  background: var(--sidebar-item-hover);
+  color: #fff;
+}
+
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+  background: var(--sidebar-item-active);
+  color: var(--sidebar-item);
+}
+#content {
+  background-image:  linear-gradient(rgba(165, 167, 168, 0.1) 4px, transparent 4px), linear-gradient(90deg, rgba(165, 167, 168, 0.1) 4px, transparent 4px), linear-gradient(rgba(165, 167, 168, 0.1) 2px, transparent 2px), linear-gradient(90deg, rgba(165, 167, 168, 0.1) 2px, rgb(229, 229, 247,.1) 2px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  background-position: -4px -4px, -4px -4px, -2px -2px, -2px -2px;
+  display:flex;
+  flex:1;
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+      margin-left: -250px;
+  }
+  #sidebar.active {
+      margin-left: 0;
+  }
 }

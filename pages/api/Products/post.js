@@ -1,8 +1,11 @@
-import { Products } from '../../../models';
+import { Products } from '../../../db/models';
 
 export default async function addProduct(req, res) {
   try {
-    const { body } = req;
+    const { body,method } = req;
+    if(method!='post'){
+      throw "Method not available"
+    }
     // find product
     const product = await Products.findOne({
       where: {
