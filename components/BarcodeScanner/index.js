@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Component } from 'react';
 import { Container, Row, Col, Label, Input, Form, FormGroup, FormText } from 'reactstrap';
 import Table from '../Table';
+import SellOrInvoiceModal from '../SellOrInvoiceModal'
 class BarcodeScanner extends Component {
   constructor(props) {
     super(props);
@@ -13,12 +14,15 @@ class BarcodeScanner extends Component {
     this.onScannedBarcodeSubmit = this.onScannedBarcodeSubmit.bind(this)
     this.addProductToBasket = this.addProductToBasket.bind(this);
     this.removeProductFromBasket=this.removeProductFromBasket.bind(this);
+    this.clearBasket = this.clearBasket.bind(this)
   }
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-
+  clearBasket(){
+    this.setState({productsBasket:[]})
+  }
   addProductToBasket(product) {
     const { productsBasket } = this.state
     let basketCopy = productsBasket;
@@ -95,6 +99,7 @@ class BarcodeScanner extends Component {
           </FormGroup>
         </Form>
         <Table Columns={tableColumns} Values={productsBasket} removeFunc={this.removeProductFromBasket}/>
+        <SellOrInvoiceModal Values={productsBasket} clearBasket={this.clearBasket}/>
       </Container>
     )
   }
