@@ -14,9 +14,6 @@ module.exports = {
       quantity: {
         type: Sequelize.INTEGER
       },
-      batchExpiration: {
-        type: Sequelize.DATE
-      },
       price: {
         type: Sequelize.FLOAT
       },
