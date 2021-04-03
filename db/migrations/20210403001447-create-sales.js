@@ -17,9 +17,6 @@ module.exports = {
       total: {
         type: Sequelize.FLOAT
       },
-      sellDate: {
-        type: Sequelize.DATE
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

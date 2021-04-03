@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
     productId: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
     total: DataTypes.FLOAT,
-    sellDate: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Sales',

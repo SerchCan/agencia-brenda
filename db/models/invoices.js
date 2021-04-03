@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Invoices.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    legalName: DataTypes.STRING,
+    email: DataTypes.STRING,
     rfc: DataTypes.STRING,
     salesIds: DataTypes.JSON,
-    isProcessed: DataTypes.BOOLEAN
+    invoiceId: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Invoices',

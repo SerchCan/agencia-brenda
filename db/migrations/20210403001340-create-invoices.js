@@ -8,20 +8,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING
-      },
-      lastName: {
+      legalName: {
         type: Sequelize.STRING
       },
       rfc: {
         type: Sequelize.STRING
       },
+      email: {
+        type: Sequelize.STRING
+      },
       salesIds: {
         type: Sequelize.JSON
       },
-      isProcessed: {
-        type: Sequelize.BOOLEAN
+      invoiceId: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
