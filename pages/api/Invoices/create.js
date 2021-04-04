@@ -1,29 +1,24 @@
 import Facturapi from 'facturapi';
-import { Invoice } from '../../../models';
-
+import { Invoices } from '../../../db/models';
 
 const facturapi = new Facturapi(process.env.FACTURAPI_KEY)
 
-async function createInvoice(invoiceData, products) {
+async function createInvoice(customer, products) {
   try {
-    const {
-      customer,
-    } = invoiceData
-
-    let InvoiceObject = {
-      ...customer,
+    let invoiceObject = {
+      customer:customer,
       items: [],
       payment_form: Facturapi.PaymentForm.EFECTIVO,
       currency: 'mxn'
     }
 
-    await products.forEach(product => {
-      InvoiceObject.items.push({
+    products.forEach(product => {
+      invoiceObject.items.push({
         quantity: product.quantity,
         discount: 0,
         product: {
           description: product.description,
-          product_key: product.product_key,
+          product_key: '50202306', //refrescos
           price: product.price,
           discount: 0,
           tax_included: false
@@ -31,18 +26,19 @@ async function createInvoice(invoiceData, products) {
       })
     });
     // create invoice
-    const facturapiInvoice = await facturapi.invoice.create(InvoiceObject)
+    const facturapiInvoice = await facturapi.invoices.create(invoiceObject)
+    
     // save to database
-    const invoice = await Invoice.create({
+    const invoice = await Invoices.create({
       legalName: customer.legal_name,
       email: customer.email,
-      rfc: customer.rfc,
+      rfc: customer.tax_id,
       salesIds: await products.map(product => product.id),
       invoiceId: facturapiInvoice.id,
 
     })
     // send by email
-    await facturapi.invoices.sendByEmail(invoice.id)
+    await facturapi.invoices.sendByEmail(invoice.invoiceId)
 
     return true;
   } catch (ex) {

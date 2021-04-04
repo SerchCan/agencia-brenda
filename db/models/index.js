@@ -29,7 +29,6 @@ fs.readdirSync(models)
     );
   })
   .forEach(file => {
-    //console.log({file,pathjoined:path.join("./", file)})
     const model = require('./'+file)(sequelize, Sequelize.DataTypes)
     db[model.name] = model;
   });

@@ -1,12 +1,12 @@
 import { Component } from 'react';
-import { Table,Button } from 'reactstrap';
-import {AiFillMinusCircle} from 'react-icons/ai'
+import { Table, Button } from 'reactstrap';
+import { AiFillMinusCircle } from 'react-icons/ai'
 class TableComponent extends Component {
   constructor(props) {
     super(props);
   }
   render() {
-    const { Columns = [], Values=[],removeFunc } = this.props;
+    const { Columns = [], Values = [], removeFunc } = this.props;
     return (
       <Table>
         <thead>
@@ -15,14 +15,16 @@ class TableComponent extends Component {
           </tr>
         </thead>
         <tbody>
-          {Values.map((row,index)=>(
+          {Values.map((row, index) => (
             <tr key={`row-${index}`}>
-              {Columns.map(column => column.key!='action' ?(<td key={`row-value-${column.key}`}>{row[column.key]}</td>):null)}
-              <td>
-                <Button color='danger' onClick={()=>removeFunc(index)}>
-                  <AiFillMinusCircle/>
+              {Columns.map(column => column.key != 'action' ? (<td key={`row-value-${column.key}`}>{row[column.key]}</td>) : null)}
+              {removeFunc?(<td>
+                <Button color='danger' onClick={() => removeFunc(index)}>
+                  <AiFillMinusCircle />
                 </Button>
-              </td>
+              </td>):null
+              }
+              
             </tr>
           ))}
         </tbody>
