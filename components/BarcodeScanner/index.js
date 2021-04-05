@@ -26,7 +26,7 @@ class BarcodeScanner extends Component {
   addProductToBasket(product) {
     const { productsBasket } = this.state
     let basketCopy = productsBasket;
-    const index = basketCopy.findIndex(product => product.barcode = product.barcode);
+    const index = basketCopy.findIndex(product2 => product2.barcode == product.barcode);
     if (index == -1) {
       const productFormat = {
         barcode: product.barcode,
@@ -80,6 +80,9 @@ class BarcodeScanner extends Component {
       {key:'total',label:'Total'},
       {key:'action',label:'Acción'},
     ]
+    const basketTotal = productsBasket.reduce((acc, product)=>{
+      return acc+product.total
+    },0)
     return (
       <Container fluid className="m-4 p-4 bg-white rounded border">
         <h2>Crear venta</h2>
@@ -98,7 +101,7 @@ class BarcodeScanner extends Component {
             </Row>
           </FormGroup>
         </Form>
-        <Table Columns={tableColumns} Values={productsBasket} removeFunc={this.removeProductFromBasket}/>
+        <Table Columns={tableColumns} Values={productsBasket} removeFunc={this.removeProductFromBasket} Total={basketTotal}/>
         <SellOrInvoiceModal Values={productsBasket} clearBasket={this.clearBasket}/>
       </Container>
     )

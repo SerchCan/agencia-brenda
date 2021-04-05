@@ -6,6 +6,7 @@ function Sidebar({ router }) {
     { link: '/', label: 'Venta' },
     { link: '/almacen', label: 'Almacen' },
     { link: '/facturas', label: 'Facturas' },
+    { link: '/reporte', label: 'Reporte' },
   ]
 
   return (

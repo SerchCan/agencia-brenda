@@ -6,7 +6,7 @@ class TableComponent extends Component {
     super(props);
   }
   render() {
-    const { Columns = [], Values = [], removeFunc } = this.props;
+    const { Columns = [], Values = [], removeFunc = null, Total = null } = this.props;
     return (
       <Table>
         <thead>
@@ -18,16 +18,24 @@ class TableComponent extends Component {
           {Values.map((row, index) => (
             <tr key={`row-${index}`}>
               {Columns.map(column => column.key != 'action' ? (<td key={`row-value-${column.key}`}>{row[column.key]}</td>) : null)}
-              {removeFunc?(<td>
+              {removeFunc ? (<td>
                 <Button color='danger' onClick={() => removeFunc(index)}>
                   <AiFillMinusCircle />
                 </Button>
-              </td>):null
+              </td>) : null
               }
-              
             </tr>
           ))}
         </tbody>
+        {Total ? (
+          <tfoot>
+            <tr>
+              <td colSpan={Columns.length - 2}></td>
+              <th className="bg-success text-white text-center">Total ${Total.toFixed(2)}</th>
+            </tr>
+          </tfoot>
+        ) : null}
+
       </Table>
     )
   }

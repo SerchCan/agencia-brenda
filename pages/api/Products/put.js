@@ -1,9 +1,9 @@
 import { Products } from '../../../db/models';
 
-export default async function addProduct(req, res) {
+export default async function updateProduct(req, res) {
   try {
     const { body, method } = req;
-    if (method != 'POST') {
+    if (method != 'PUT') {
       throw "Method not available"
     }
     // find product
@@ -15,13 +15,12 @@ export default async function addProduct(req, res) {
     // if product exists
     if (product !== null) {
       // update instance
-      product.quantity = product.quantity + body.quantity
+      product.quantity = product.quantity + body.quantity;
+      product.price = body.price;
       const response = await product.save();
       return res.status(200).json({ result: response })
     }
-    // create new product
-    const result = await Products.create(body);
-    return res.status(200).json({ result: result });
+    return res.status(404).json({ message: "Cannot update product not found" });
   } catch (ex) {
     console.log(ex)
     return res.status(500).json({ message: "Server error" });

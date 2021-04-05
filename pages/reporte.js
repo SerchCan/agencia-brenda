@@ -1,7 +1,7 @@
 import Layout from '../components/Layout'
-import Storage from '../components/Storage'
+import SalesReport from '../components/SalesReport'
 export default function Home(){
   return <Layout>
-      <Storage/>
+      <SalesReport/>
   </Layout>
 }
