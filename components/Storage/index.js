@@ -12,12 +12,15 @@ class Storage extends Component {
       newQuantity: 0,
       price: '',
       newPrice: '',
+      search:'',
       found: false,
+      isInternal:false,
       allProducts: []
     }
     this.handleChange = this.handleChange.bind(this);
     this.findProduct = this.findProduct.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.findProductOnStorage = this.findProductOnStorage.bind(this);
   }
 
   async componentDidMount() {
@@ -26,9 +29,28 @@ class Storage extends Component {
   }
 
   handleChange(e) {
+    if(e.target.type == "checkbox"){
+      this.setState({ [e.target.name]: e.target.checked })
+      return
+    }
     this.setState({ [e.target.name]: e.target.value })
   }
 
+  async findProductOnStorage(e){
+    try {
+      e.preventDefault();
+      if(this.state.search != ''){
+        const { data } = await axios.get(`/api/Products/findByTerm?q=${this.state.search}`);
+        this.setState({allProducts: data.result});
+      } else {
+        const { data } = await axios.get('/api/Products/getAll');
+        this.setState({ allProducts: data.result });
+      }
+    } catch (err) {
+      // not found
+      console.log("not found")
+    }
+  }
   async findProduct(e) {
     try {
       e.preventDefault();
@@ -61,14 +83,17 @@ class Storage extends Component {
       price,
       newQuantity,
       newPrice,
+      isInternal,
     } = this.state;
 
     if (!found) {
-      const body = {
-        barcode,
+      let body = {
         name,
         quantity: Number(quantity),
         price: Number(price)
+      }
+      if(!isInternal){
+        body.barcode = barcode;
       }
       const { data } = await axios.post('/api/Products/post', body)
       alert("Inserted Correctly: " + data.result.id)
@@ -92,7 +117,9 @@ class Storage extends Component {
       newQuantity,
       newPrice,
       found,
-      allProducts
+      isInternal,
+      allProducts,
+      search
     } = this.state;
 
     const Columns = [
@@ -108,8 +135,15 @@ class Storage extends Component {
         <Form className="mt-4" onSubmit={this.findProduct}>
           <FormGroup >
             <Label>Código de barras:</Label>
-            <Input name="barcode" value={barcode} onChange={this.handleChange} autoComplete={'off'} />
+            <Input name="barcode" value={barcode} onChange={this.handleChange} autoComplete={'off'} disabled={isInternal}/>
           </FormGroup>
+          <FormGroup check>
+          <Label check>
+            <Input type="checkbox" name="isInternal" checked={isInternal} onChange={this.handleChange}/>{' '}
+            Es producto interno, se le generara su propio código de barras.
+          </Label>
+      </FormGroup>
+
         </Form>
         <Form className="mt-4">
           <FormGroup >
@@ -117,7 +151,7 @@ class Storage extends Component {
             <Input name="name" value={name} onChange={this.handleChange} autoComplete={'off'} disabled={found} />
           </FormGroup>
           <FormGroup >
-            <Label>Cantidad Actual:</Label>
+            <Label>Cantidad en stock:</Label>
             <Input name="quantity" type="number" value={quantity} onChange={this.handleChange} autoComplete={'off'} disabled={found} />
           </FormGroup>
           <FormGroup >
@@ -140,12 +174,19 @@ class Storage extends Component {
             </>
           ) : (
             <FormGroup >
-              <Button color="success" disabled={barcode == ''} onClick={() => this.submitForm(false)}>Guardar</Button>
+              <Button color="success" disabled={barcode == '' && !isInternal} onClick={() => this.submitForm(false)}>Guardar</Button>
             </FormGroup>
           )}
         </Form>
 
         <h4 className="pt-2 pb-2 text-center bg-dark text-white">Listado de productos</h4>
+        <Form className="mt-4" onSubmit={this.findProductOnStorage}>
+          <h5><strong>Búsqueda de artículo</strong></h5>
+          <FormGroup >
+            <Label>Nombre del producto:</Label>
+            <Input name="search" value={search} onChange={this.handleChange} autoComplete={'off'}/>
+          </FormGroup>
+        </Form>
         <Table Columns={Columns} Values={allProducts} />
       </Container>
     )

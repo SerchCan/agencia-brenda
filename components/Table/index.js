@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Table, Button } from 'reactstrap';
 import { AiFillMinusCircle } from 'react-icons/ai'
+import Barcode from 'react-barcode';
 class TableComponent extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +18,18 @@ class TableComponent extends Component {
         <tbody>
           {Values.map((row, index) => (
             <tr key={`row-${index}`}>
-              {Columns.map(column => column.key != 'action' ? (<td key={`row-value-${column.key}`}>{row[column.key]}</td>) : null)}
+              {
+                Columns.map((column) => {
+                  switch(column.key){
+                    case 'action':
+                      return null;
+                    case 'barcode':
+                      return (<td key={`row-value-${column.key}`}><Barcode value={row[column.key]}/></td>)
+                    default:
+                      return (<td key={`row-value-${column.key}`}>{row[column.key]}</td>)
+                  }
+                })
+              }
               {removeFunc ? (<td>
                 <Button color='danger' onClick={() => removeFunc(index)}>
                   <AiFillMinusCircle />

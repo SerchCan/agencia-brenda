@@ -1,3 +1,12 @@
+### Useful commands
+
+```bash
+npm install
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
+npm run dev
+```
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

@@ -1,10 +1,20 @@
-import { Products } from '../../../db/models';
-
+import { Products, InternalProductCount } from '../../../db/models';
+async function generateProductKey(){
+  const InternalObj = await InternalProductCount.findByPk(1)
+  let result = InternalObj.seq;
+  InternalObj.seq = InternalObj.seq+1;
+  InternalObj.save()
+  return String(result);
+}
 export default async function addProduct(req, res) {
   try {
-    const { body, method } = req;
+    const { body:reqBody, method } = req;
+    let body = reqBody;
     if (method != 'POST') {
       throw "Method not available"
+    }
+    if(!reqBody.barcode){
+      body.barcode = await generateProductKey()
     }
     // find product
     const product = await Products.findOne({
